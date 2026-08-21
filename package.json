@@ -1,0 +1,21 @@
+{
+  "name": "nexthire-ai-resume",
+  "version": "1.0.0",
+  "description": "NextHire — AI Resume Analyzer & Recruiter Simulation",
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "start": "npm --prefix frontend run dev",
+    "backend": "python backend/run.py",
+    "test:backend": "python backend/tests/test_full_journey.py"
+  },
+  "keywords": [
+    "ai",
+    "resume-analyzer",
+    "recruiter-simulation",
+    "fastapi",
+    "react"
+  ],
+  "author": "",
+  "license": "ISC"
+}
