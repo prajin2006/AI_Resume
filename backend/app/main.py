@@ -44,7 +44,7 @@ app = FastAPI(
 # CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
+    allow_origins=settings.get_cors_origins(),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -69,6 +69,15 @@ app.include_router(interviews.router, prefix=settings.API_V1_STR)
 app.include_router(preparation.router, prefix=settings.API_V1_STR)
 app.include_router(copilot.router, prefix=settings.API_V1_STR)
 app.include_router(improvements.router, prefix=settings.API_V1_STR)
+
+@app.get("/")
+def root():
+    return {
+        "status": "online",
+        "service": "NextHire — AI Resume Analyzer API",
+        "docs": "/docs",
+        "health": "/api/health"
+    }
 
 @app.get("/api/health")
 def health_check():

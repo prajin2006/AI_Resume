@@ -19,6 +19,10 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: str = ""
     OPENAI_MODEL: str = "gpt-4o-mini"
     ANTHROPIC_API_KEY: str = ""
+    GEMINI_API_KEY: str = ""
+
+    # Frontend URL for Vercel / Production deployments
+    FRONTEND_URL: str = ""
 
     # File uploads
     UPLOAD_DIR: str = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "uploads")
@@ -30,9 +34,24 @@ class Settings(BaseSettings):
         "http://localhost:3000",
         "http://localhost:5173",
         "http://127.0.0.1:3000",
-        "http://127.0.0.1:5173",
-        "*"
+        "http://127.0.0.1:5173"
     ]
+
+    def get_cors_origins(self) -> List[str]:
+        origins = list(self.CORS_ORIGINS)
+        if self.FRONTEND_URL:
+            for url in self.FRONTEND_URL.split(","):
+                cleaned = url.strip().rstrip("/")
+                if cleaned and cleaned not in origins:
+                    origins.append(cleaned)
+        # Also check if any custom CORS origins passed via environment variable string
+        custom_env_cors = os.environ.get("CORS_ORIGINS", "")
+        if custom_env_cors:
+            for origin in custom_env_cors.split(","):
+                cleaned = origin.strip().rstrip("/")
+                if cleaned and cleaned not in origins:
+                    origins.append(cleaned)
+        return origins
 
     class Config:
         env_file = ".env"

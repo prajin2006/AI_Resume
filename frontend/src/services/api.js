@@ -1,4 +1,7 @@
-const API_BASE_URL = '/api';
+const rawApiUrl = import.meta.env.VITE_API_URL || '';
+const API_BASE_URL = rawApiUrl
+  ? (rawApiUrl.endsWith('/api') ? rawApiUrl : `${rawApiUrl.replace(/\/+$/, '')}/api`)
+  : '/api';
 
 function getAuthHeaders() {
   const token = localStorage.getItem('nexthire_token');
